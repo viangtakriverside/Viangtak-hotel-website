@@ -44,6 +44,34 @@ html {
     --font-heading: "Playfair Display", "Noto Serif Thai", Georgia, serif;
     --font-body: "Inter", "Noto Sans Thai", sans-serif;
     --font-price: "Fraunces", "Playfair Display", Georgia, serif;
+
+    /* ----- Paragraph text sizes -----
+       Every paragraph rule in this file uses one of these two sizes,
+       so the size of all the paragraph text on the site can be changed
+       right here, in one place, instead of in 20+ separate rules.
+
+       --text-body  : the main paragraphs of each section.
+                      1.0625rem = 17px on a phone. It grows to 18px on
+                      bigger screens (see the @media rule just below).
+       --text-small : the smaller supporting paragraphs (card
+                      descriptions, captions, notes). 1rem = 16px on
+                      every screen, one step below the main text.
+
+       The paragraphs also use font-weight 400 (Regular) rather than
+       300 (Light). Light's thin strokes made the text look smaller
+       than it really was, and faded out on the dark sections. */
+    --text-body: 1.0625rem;
+    --text-small: 1rem;
+}
+
+/* On a wide screen a paragraph runs much further from left to right,
+   so the main text gets a little bigger to match. At 16px, desktop
+   lines were reaching about 77 characters, past the ~75 where long
+   lines start to get tiring to read. 1.125rem = 18px. */
+@media (min-width: 1024px) {
+    :root {
+        --text-body: 1.125rem;
+    }
 }
 
 
@@ -116,7 +144,8 @@ html {
 #reserve-page .reserve-text-p {
     font-family: var(--font-body);
     color: var(--ink);
-    font-weight: 300;
+    font-size: var(--text-body);
+    font-weight: 400;
     line-height: 1.5;
 
 }
@@ -363,8 +392,8 @@ html {
 
 .form-note {
     font-family: var(--font-body);
-    font-weight: 300;
-    font-size: .9rem;
+    font-weight: 400;
+    font-size: var(--text-small);
     line-height: 1.6;
     color: var(--ink-soft);
     margin: 1rem 0 0;
@@ -874,7 +903,9 @@ body.nav-open {
 
 .hero-text .hero-paragraph {
     font-family: var(--font-body);
-    font-size: .9rem;
+    /* phone size only: the 768px and 1024px @media rules further
+       down this file make it bigger on wider screens */
+    font-size: var(--text-small);
     font-weight: 400;
     text-shadow: 0 0 1px black;
     line-height: 1.7;
@@ -966,7 +997,8 @@ body.nav-open {
 .welcome-section p {
     font-family: var(--font-body);
     color: var(--ink);
-    font-weight: 300;
+    font-size: var(--text-body);
+    font-weight: 400;
     line-height: 1.5;
 }
 
@@ -1007,7 +1039,8 @@ body.nav-open {
 .room-section-text p {
     font-family: var(--font-body);
     color: var(--ink);
-    font-weight: 300;
+    font-size: var(--text-body);
+    font-weight: 400;
     line-height: 1.5;
     margin-bottom: 2rem;
 }
@@ -1068,7 +1101,8 @@ body.nav-open {
 .room-body p {
     font-family: var(--font-body);
     color: var(--ink);
-    font-weight: 300;
+    font-size: var(--text-body);
+    font-weight: 400;
     line-height: 1.5;
 }
 
@@ -1155,7 +1189,8 @@ body.nav-open {
 
 .dining-text p {
     font-family: var(--font-body);
-    font-weight: 300;
+    font-size: var(--text-body);
+    font-weight: 400;
     line-height: 1.5;
 }
 
@@ -1223,7 +1258,8 @@ body.nav-open {
 
 .zag-body p {
     font-family: var(--font-body);
-    font-weight: 300;
+    font-size: var(--text-body);
+    font-weight: 400;
     line-height: 1.7;
     color: var(--cream);
     margin: 0;
@@ -1234,7 +1270,8 @@ body.nav-open {
 
 .buffet-intro {
     font-family: var(--font-body);
-    font-weight: 300;
+    font-size: var(--text-body);
+    font-weight: 400;
     line-height: 1.6;
     margin-top: 3.5rem;
     margin-bottom: 1.5rem;
@@ -1268,8 +1305,8 @@ body.nav-open {
 
 .buffet-item p {
     font-family: var(--font-body);
-    font-weight: 300;
-    font-size: 0.95rem;
+    font-weight: 400;
+    font-size: var(--text-small);
     line-height: 1.6;
     color: var(--cream);
     margin: 0;
@@ -1311,8 +1348,8 @@ body.nav-open {
 .facilities-grid p {
     font-family: var(--font-heading);
     letter-spacing: .5px;
-    font-size: 1rem;
-    font-weight: 300;
+    font-size: var(--text-body);
+    font-weight: 400;
     line-height: 1.5;
     margin-top: .5rem;
 }
@@ -1327,7 +1364,8 @@ body.nav-open {
 .event-text .event-intro {
     font-family: var(--font-body);
     color: var(--ink);
-    font-weight: 300;
+    font-size: var(--text-body);
+    font-weight: 400;
     line-height: 1.5;
     max-width: 42rem;
 }
@@ -1403,9 +1441,9 @@ body.nav-open {
 .venue p {
     font-family: var(--font-body);
     color: var(--ink);
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.6;
-    font-size: 0.95rem;
+    font-size: var(--text-small);
     margin: 0;
 }
 
@@ -1504,8 +1542,8 @@ body.nav-open {
     text-align: left;
 
     font-family: var(--font-body);
-    font-weight: 300;
-    font-size: 0.9rem;
+    font-weight: 400;
+    font-size: var(--text-small);
     line-height: 1.6;
     color: var(--ink-soft);
     max-width: 34rem;
@@ -1645,7 +1683,8 @@ body.nav-open {
 .event-cta p {
     font-family: var(--font-body);
     color: var(--ink);
-    font-weight: 300;
+    font-size: var(--text-body);
+    font-weight: 400;
     line-height: 1.6;
     margin: 0 0 1.5rem;
     max-width: 34rem;
@@ -1805,7 +1844,8 @@ body.nav-open {
 }
 
 #line-modal p {
-    font-weight: 300;
+    font-size: var(--text-body);
+    font-weight: 400;
     line-height: 1.5;
     margin: 1rem 0 1.5rem;
 }
@@ -2388,6 +2428,28 @@ body.nav-open {
     }
 }
 
+/* A short phone held upright, like an iPhone SE: once Safari's toolbars
+   are showing, it has only about 550px of height left for the page.
+   When the hero paragraph went up to 16px (--text-small, at the top of
+   this file), its extra lines made the hero text taller, and on a
+   screen this short the top of it slid up underneath the header. On
+   these phones the paragraph goes back to its old size, so the hero
+   looks exactly the way it did before.
+
+   Why 620px: measured in a browser, the bigger paragraph starts sliding
+   under the header at about 603px of height, so 620px leaves a little
+   safety room above that.
+
+   "max-width: 767px" keeps this to phones. Without it, a short desktop
+   browser window would match too, and this rule would shrink the hero
+   paragraph there as well. */
+@media (max-height: 620px) and (max-width: 767px) {
+
+    .hero-text .hero-paragraph {
+        font-size: 0.9rem;
+    }
+}
+
 
 /* ====== REDUCED MOTION ====== */
 
@@ -2429,7 +2491,8 @@ body.nav-open {
 .gallery-intro {
     font-family: var(--font-body);
     color: var(--ink-soft);
-    font-weight: 300;
+    font-size: var(--text-body);
+    font-weight: 400;
     line-height: 1.5;
 }
 
@@ -2754,6 +2817,10 @@ body.nav-open {
     margin: 0;
     color: var(--deep-green);
     font-weight: 500;
+    /* Same reason again: ".story-body p" sets the paragraph size, and
+       without repeating the kicker's own size here, the kicker would
+       grow to paragraph size along with it. */
+    font-size: 0.8rem;
 }
 
 
@@ -2791,7 +2858,8 @@ body.nav-open {
 .story-body p {
     font-family: var(--font-body);
     color: var(--ink);
-    font-weight: 300;
+    font-size: var(--text-body);
+    font-weight: 400;
     line-height: 1.7;
     margin: 1rem 0 0;
 }
@@ -2838,7 +2906,8 @@ body.nav-open {
 
 .today-section .today-intro {
     font-family: var(--font-body);
-    font-weight: 300;
+    font-size: var(--text-body);
+    font-weight: 400;
     line-height: 1.7;
     color: var(--cream);
     max-width: 42rem;
@@ -2873,9 +2942,9 @@ body.nav-open {
 .fact-grid p {
     font-family: var(--font-body);
     color: var(--cream);
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.5;
-    font-size: 0.9rem;
+    font-size: var(--text-small);
     margin: 0;
 }
 
@@ -3015,9 +3084,9 @@ body.nav-open {
 .festival-index-intro {
     font-family: var(--font-body);
     color: var(--ink-soft);
-    font-weight: 300;
+    font-weight: 400;
     line-height: 1.6;
-    font-size: 1rem;
+    font-size: var(--text-body);
     max-width: 44rem;
     margin: 0.75rem 0 0;
 }
@@ -3199,8 +3268,8 @@ body.nav-open {
 .kite-why-list p {
     font-family: var(--font-body);
     color: var(--cream);
-    font-weight: 300;
-    font-size: 0.95rem;
+    font-weight: 400;
+    font-size: var(--text-small);
     line-height: 1.5;
     margin: 0;
 }
@@ -3288,8 +3357,8 @@ body.nav-open {
 .kite-zones p {
     font-family: var(--font-body);
     color: var(--ink-soft);
-    font-weight: 300;
-    font-size: 0.92rem;
+    font-weight: 400;
+    font-size: var(--text-small);
     line-height: 1.55;
     margin: 0;
 }
