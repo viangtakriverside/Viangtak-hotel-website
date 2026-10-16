@@ -1,6 +1,6 @@
 # The ViangTak Riverside Hotel — Official Website
 
-The official bilingual (English / Thai) website of **The ViangTak Riverside Hotel** in Tak, Thailand.
+The official bilingual website of **The ViangTak Riverside Hotel** in Tak, Thailand.
 
 **🌐 Live site: [viangtakriverside.com](https://viangtakriverside.com)**
 
