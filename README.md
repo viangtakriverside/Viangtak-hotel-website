@@ -33,7 +33,7 @@ I also handled the launch myself: moving the domain to a new registrar, DNS, HTT
   - The submit button stays disabled until the form is valid
   - Submissions go through Netlify Forms (with a honeypot field against spam bots) and are emailed to the hotel instantly
 - **Photo gallery lightbox** built on the native `<dialog>` element, with previous/next arrows, swipe, a "3 / 14" counter and separate photo sets per page.
-- **Festival guide pages** for Tak's Loy Krathong and kite festivals, with a countdown badge that updates itself ("in 10 days" → "on now" → "finished for this year"), so the page never goes stale.
+- **Festival guide pages** for Tak's Loy Krathong Sai festival.
 - **Responsive, mobile-first layout**
   - Hamburger menu that closes on an outside click or the Esc key
   - Header that turns solid on scroll
@@ -70,7 +70,6 @@ I also handled the launch myself: moving the domain to a new registrar, DNS, HTT
 ├── main.js                                   Menu, header on scroll, smooth scroll, LINE popup
 ├── reservation.js                            Booking form logic
 ├── gallery.js                                Photo lightbox
-├── kite-countdown.js                         Self-updating festival countdown
 ├── fade-up.js                                Scroll-reveal effect
 ├── cookie-consent.js                         Cookie banner + consent-based analytics
 ├── _redirects                                Netlify redirects (old URLs → new)

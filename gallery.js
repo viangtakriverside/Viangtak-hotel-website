@@ -26,17 +26,13 @@ let scrollPositionBeforeOpen = 0;
 
 
 // ===== Build one list of photos per gallery =====
-// A page can hold more than one separate set of photos. The loykrathong
-// pages now have two: the row of festival site maps in the kite section,
-// and the big photo gallery further down. Each set needs its own list, or
-// the lightbox's Next/Previous arrows and its "3 / 14" counter would run
-// straight out of one set and into the other — clicking past the last
-// site map would land you in the middle of the krathong photos, counting
-// "4 / 17".
+// A page can hold more than one separate set of photos. Each set needs its
+// own list, or the lightbox's Next/Previous arrows and its "3 / 14" counter
+// would run straight out of one set and into the other.
 //
 // A set is whatever element carries data-gallery in the HTML. Pages that
 // don't mark their gallery at all still work: those tiles all fall back
-// to <body>, which puts them in a single set, exactly as before.
+// to <body>, which puts them in a single set.
 
 const photoSets = new Map();
 
@@ -152,35 +148,18 @@ galleryModal.addEventListener("touchend", function (e) {
 
 // Work out which photo a tile should open in the lightbox.
 //
-// Almost every tile is a photo thumbnail, and the lightbox simply reopens
-// that same <img> — it reads the "src" attribute rather than whichever
-// size the grid happened to display, so the full-size file opens even
-// though the grid showed the small one (see the "srcset" comments in the
-// HTML).
-//
-// The festival site-map buttons on the loykrathong pages are tiles too,
-// but they show a map icon and a label instead of a thumbnail, so there
-// is no <img> inside them to read. Those name their photo on the button
-// itself with data- attributes instead. Keeping the map out of the button
-// this way also means the map file — around half a megabyte, because it
-// is full of small print that has to stay sharp — is only ever downloaded
-// if somebody actually opens it.
+// Every tile is a photo thumbnail, and the lightbox simply reopens that
+// same <img> — it reads the "src" attribute rather than whichever size
+// the grid happened to display, so the full-size file opens even though
+// the grid showed the small one (see the "srcset" comments in the HTML).
 function readPhotoFromTile(tile) {
     const img = tile.querySelector("img");
     const caption = tile.querySelector("figcaption");
 
-    if (img) {
-        return {
-            src: img.src,
-            alt: img.alt,
-            caption: caption ? caption.textContent : ""
-        };
-    }
-
     return {
-        src: tile.dataset.photo,
-        alt: tile.dataset.photoAlt || "",
-        caption: tile.dataset.photoCaption || tile.textContent.trim()
+        src: img.src,
+        alt: img.alt,
+        caption: caption ? caption.textContent : ""
     };
 }
 
