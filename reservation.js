@@ -16,7 +16,20 @@ const roomsField = document.getElementById("rooms-field");
 const roomsMinus = document.getElementById("rooms-minus");
 const roomsPlus = document.getElementById("rooms-plus");
 
+// Find the form on whichever page we're on (English or Thai)
+let reserveForm = document.querySelector('form[name="reservation"]');
 
+if (!reserveForm) {
+    reserveForm = document.querySelector('form[name="reservation-th"]');
+}
+
+reserveForm.addEventListener('submit', function () {
+    const name = this.querySelector('[name="name"]').value;
+    const checkin = this.querySelector('[name="checkin"]').value;
+    const checkout = this.querySelector('[name="checkout"]').value;
+    document.getElementById('subject').value =
+        `New reservation – ${name} – ${checkin} to ${checkout}`;
+});
 
 let guests = 2;
 
