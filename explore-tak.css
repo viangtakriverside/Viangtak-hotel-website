@@ -1,0 +1,1206 @@
+/* =========================================================
+   EXPLORE TAK PAGE
+   Used by explore-tak.html and explore-tak-th.html only.
+
+   This file is loaded AFTER styles.css, so it can use the
+   colours and fonts defined there (var(--cream), var(--ink),
+   var(--font-heading)...) without repeating them.
+
+   Every class in this file starts with "et-" (for "Explore
+   Tak"). No other page uses a class with that name, so
+   nothing written here can change how another page looks.
+
+   Written mobile-first, the same way as styles.css: every
+   rule applies to phones first. The @media blocks at the
+   bottom of the file change things for wider screens:
+       768px  and up  -> tablet
+       1024px and up  -> desktop
+   ========================================================= */
+
+
+/* ========== PAGE COLOURS ==========
+   Two colours this page needs that styles.css doesn't have.
+   They are set on <body class="et-page">, so they only exist
+   on this page. */
+
+.et-page {
+    /* the pale green circle behind each section icon */
+    --et-icon-bg: #e4e6d6;
+
+    /* the see-through pills in the dark "Overnight" section */
+    --et-pill-on-dark: rgba(255, 255, 255, 0.1);
+
+    /* the soft shadow under the white cards */
+    --et-card-shadow: 0 6px 24px rgba(28, 43, 45, 0.08);
+}
+
+
+/* ========== CURRENT PAGE IN THE MENU ==========
+   "Explore Tak" in the header and footer menus gets the class
+   "et-nav-current", so visitors can see which page they are on.
+   Gold, like the design. */
+
+.primary-nav a.et-nav-current {
+    color: var(--gold);
+}
+
+.footer-nav a.et-nav-current {
+    color: var(--gold);
+}
+
+
+/* ========== SHARED PIECES ========== */
+
+/* The page content is 1200px wide on a big screen, with 1.5rem
+   (24px) of space on the left and right on smaller screens.
+   "box-sizing: border-box" (set for every element at the top of
+   styles.css) means the padding is counted inside max-width, so
+   max-width is 1200px + the two paddings. */
+.et-container {
+    max-width: calc(1200px + 3rem);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+/* Small uppercase label above a heading ("PLAN YOUR DAYS").
+   Same look as the other kickers in styles.css. */
+.et-kicker {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--deep-green);
+}
+
+/* Main heading of a section ("Sorted by how far you'll go").
+   styles.css has a rule for every <h2> on the site (font, colour,
+   size, margin-top and max-width) — this replaces the size and
+   spacing for this page. */
+.et-heading {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: clamp(1.8rem, 3vw, 2.75rem);
+    line-height: 1.2;
+    color: var(--ink);
+    margin: 0.75rem 0 0;
+    max-width: none;
+}
+
+/* Normal paragraph text in a section */
+.et-text {
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--ink);
+    margin: 1rem 0 0;
+}
+
+/* Every icon on the page is an inline <svg> with this class.
+   The icons are drawn with lines ("stroke"), and
+   "stroke: currentColor" makes the lines the same colour as the
+   text around them, so one icon works on light and dark
+   backgrounds. */
+.et-icon {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* The green round button ("Start exploring", "Book your stay").
+   Same look as the "explore-btn" on the home page. */
+.et-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 1.6rem 1rem 1.3rem;
+    background-color: var(--green);
+    border-radius: 50px;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.et-btn .et-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+@media (hover: hover) {
+    .et-btn:hover {
+        transform: translateY(-3px);
+        background-color: var(--deep-green);
+    }
+}
+
+.et-btn:active {
+    transform: scale(0.97);
+}
+
+
+/* ========== 1. HERO ==========
+   Full-width photo with the title on top of it.
+
+   The home page hero puts its text on top of the photo with
+   "position: absolute", which can overflow on short screens
+   (there's a long comment about it near the end of styles.css).
+   This hero avoids that: the photo is the absolutely positioned
+   part, and the text stays in the normal flow of the page. If
+   the text ever needs more room than the screen has, the hero
+   simply grows taller instead of the text spilling out. */
+
+.et-hero {
+    position: relative;
+    display: flex;
+    /* text in the middle of the screen (top to bottom), like the
+       home page hero */
+    align-items: center;
+
+    /* "svh" = "small viewport height": the screen height when
+       Safari's toolbars are showing, so the hero fits on the
+       first screen of an iPhone. Never taller than 780px. */
+    min-height: min(100svh, 780px);
+
+    /* 7rem on top leaves room for the fixed header */
+    padding: 7rem 0 4rem;
+    overflow: hidden;
+    background-color: var(--teal-deep);
+    color: var(--white);
+}
+
+/* PHONES: the sun.
+   In the photo the sun is a little above the middle (about 41%
+   down), which is exactly where the title sits now that the text
+   is centred, so the title would cover it. To fix that, on phones
+   the photo is made 135% as tall as the hero and pinned to the
+   BOTTOM (bottom: 0). The extra 35% hangs off the top and is cut
+   off by "overflow: hidden" on .et-hero, which slides the whole
+   picture up, so the sun lands in the open sky between the
+   header and the text.
+   The 768px @media rule near the end of this file puts the photo
+   back to normal size, because on tablets and computers the text
+   is beside the sun, not on top of it. */
+.et-hero-img {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 135%;
+    object-fit: cover;
+    /* which part of the photo stays visible when it is cropped
+       left and right: 68% keeps the sun and the paddleboarders
+       on screen on a narrow phone */
+    object-position: 68% center;
+    display: block;
+}
+
+/* A dark layer over the photo so the white text is easy to read.
+   On a phone it is lightest around 20% down (so the sun stays
+   bright) and darker from the middle down, where the text is. */
+.et-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            rgba(18, 33, 36, 0.3) 0%,
+            rgba(18, 33, 36, 0.1) 20%,
+            rgba(18, 33, 36, 0.45) 45%,
+            rgba(18, 33, 36, 0.7) 100%);
+}
+
+/* "position: relative" puts the text above the photo and the
+   dark layer (they come earlier in the HTML). */
+.et-hero-text {
+    position: relative;
+    width: 100%;
+    max-width: 750px;
+    padding: 0 1.5rem;
+}
+
+.et-hero-kicker {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+}
+
+.et-hero-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(2.1rem, 5.2vw, 4rem);
+    line-height: 1.15;
+    color: var(--white);
+    text-shadow: 0 0 1px black;
+    margin: 0.75rem 0 0;
+}
+
+.et-hero-paragraph {
+    /* stops the lines getting too long to read comfortably on a
+       wide screen (the design wraps at about 640px) */
+    max-width: 40rem;
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: 1.7;
+    text-shadow: 0 0 1px black;
+    margin: 1rem 0 0;
+}
+
+.et-hero .et-btn {
+    margin-top: 1.75rem;
+}
+
+/* "Photos: TAT Tak Office", small, in the bottom-right corner */
+.et-hero-credit {
+    position: absolute;
+    right: 1rem;
+    bottom: 0.75rem;
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+
+/* ========== 2. INTRO + FILTER CHIPS ========== */
+
+.et-intro {
+    background-color: var(--cream);
+    padding-top: 4rem;
+}
+
+.et-intro-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+/* "Good to know" box */
+.et-tips {
+    background-color: var(--sand);
+    border-radius: 20px;
+    padding: 1.5rem 1.75rem;
+}
+
+.et-tips ul {
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.et-tips li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-family: var(--font-body);
+    font-size: var(--text-small);
+    line-height: 1.5;
+    color: var(--ink);
+}
+
+.et-tips li .et-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    /* nudges the icon down to line up with the first line of text */
+    margin-top: 0.1rem;
+    color: var(--deep-green);
+}
+
+/* The row of filter buttons ("All places", "Walk from the hotel"...).
+   On a phone they don't all fit, so the row scrolls sideways.
+   "flex-wrap: nowrap" keeps them on one line, and
+   "overflow-x: auto" lets that line scroll. */
+.et-chips {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.6rem;
+    overflow-x: auto;
+    margin: 2rem 0 0;
+    padding: 0.25rem 0 0.5rem;
+
+    /* hides the scrollbar (the row can still be swiped) */
+    scrollbar-width: none;
+}
+
+.et-chips::-webkit-scrollbar {
+    display: none;
+}
+
+/* The chips row starts with the "hidden" attribute in the HTML
+   (explore-tak.js removes it). The "display: flex" just above would
+   beat "hidden" and show the row anyway, so this puts "hidden" back
+   in charge. */
+.et-chips[hidden] {
+    display: none;
+}
+
+.et-chip {
+    flex-shrink: 0;
+    padding: 0.6rem 1.1rem;
+    background-color: transparent;
+    border: 1px solid var(--ink);
+    border-radius: 50px;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@media (hover: hover) {
+    .et-chip:hover {
+        background-color: var(--sand);
+    }
+}
+
+/* The chip that is switched on. explore-tak.js sets
+   aria-pressed="true" on it — that same attribute tells
+   screen readers which chip is on, so the look and the
+   meaning can never disagree. */
+.et-chip[aria-pressed="true"] {
+    background-color: var(--ink);
+    color: var(--white);
+}
+
+
+/* ========== 3. GROUPS (walk / hour / day / overnight) ==========
+   Each group of places is wrapped in an element with a
+   "data-group" attribute. explore-tak.js hides a group by adding
+   the "hidden" attribute to it.
+
+   "hidden" normally works on its own, but a CSS "display" rule
+   on the same element would beat it and keep it showing. This
+   rule makes sure hidden always wins on this page. */
+
+.et-page [data-group][hidden] {
+    display: none;
+}
+
+.et-section {
+    padding: 3.5rem 0;
+}
+
+.et-section-cream {
+    background-color: var(--cream);
+}
+
+.et-section-sand {
+    background-color: var(--sand);
+}
+
+/* The heading of each group: round icon + title + one line */
+.et-group-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+}
+
+.et-group-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: var(--et-icon-bg);
+    color: var(--deep-green);
+}
+
+.et-group-icon .et-icon {
+    width: 22px;
+    height: 22px;
+}
+
+.et-group-title {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: clamp(1.6rem, 2.4vw, 2rem);
+    line-height: 1.2;
+    color: var(--ink);
+    margin: 0;
+    max-width: none;
+}
+
+.et-group-subtitle {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    margin: 0.25rem 0 0;
+}
+
+
+/* ========== 4. PLACE CARDS ========== */
+
+/* The list of cards. On a phone the "walk" cards simply stack
+   one under the other. */
+.et-cards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+/* The "Under an hour", "Day trips" and "Mae Sot" rows get the
+   extra class "et-swipe". On a phone they become one sideways
+   row you can swipe through (see the design), instead of a
+   very long stack.
+   - "grid-auto-flow: column" puts every card in its own column
+     (one row).
+   - "grid-auto-columns: 82%" makes each card a bit narrower
+     than the screen, so the edge of the next card peeks in and
+     shows there is more.
+   - "scroll-snap" makes each swipe stop neatly on a card. */
+.et-swipe {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 82%;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    /* room at the bottom so the card shadow isn't cut off */
+    padding-bottom: 1.25rem;
+    scrollbar-width: none;
+}
+
+.et-swipe::-webkit-scrollbar {
+    display: none;
+}
+
+.et-swipe > li {
+    scroll-snap-align: start;
+}
+
+/* "Swipe for more ->" under a sideways row (phones only) */
+.et-swipe-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.75rem 0 0;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+}
+
+/* One card: photo on top, text underneath.
+   "display: flex" + "flex-direction: column" stacks the photo and
+   the text, and "height: 100%" makes every card in a row as tall
+   as the tallest one. */
+.et-card {
+    /* "position: relative" matters here for a hidden reason: each map
+       link holds a screen-reader-only text ("opens in a new tab") that
+       uses "position: absolute" (the .visually-hidden class in
+       styles.css). Without a positioned parent, that text is placed
+       relative to the whole page instead of the card, and in the
+       sideways-scrolling rows on a phone it stuck out past the right
+       edge of the screen, making the whole page scroll sideways. */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--white);
+    border-radius: 20px;
+    box-shadow: var(--et-card-shadow);
+    /* cuts the photo's corners to the card's rounded corners */
+    overflow: hidden;
+}
+
+/* "position: relative" so the little badge can sit on top of
+   the photo, in its top-left corner. */
+.et-card-media {
+    position: relative;
+}
+
+.et-card-media img {
+    display: block;
+    width: 100%;
+    /* The <img> tags have width="..." and height="..." in the HTML
+       (so the browser can save the right amount of space before the
+       photo loads). The browser treats that height like a fixed CSS
+       height, and a fixed height switches "aspect-ratio" off.
+       "height: auto" undoes it so "aspect-ratio" below works. */
+    height: auto;
+    /* every photo is cut to the same 3:2 shape, whatever size
+       the original is ("object-fit: cover" crops instead of
+       squashing) */
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+}
+
+/* The white pill on the photo ("5 min walk") */
+.et-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0.35rem 0.75rem;
+    background-color: var(--white);
+    border-radius: 50px;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    color: var(--ink);
+}
+
+/* The text part of the card. "flex: 1" makes it fill the rest of
+   the card's height, so the time + map link below can be pushed
+   to the bottom (see .et-card-meta). */
+.et-card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 1.75rem;
+}
+
+.et-card-kicker {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--deep-green);
+}
+
+.et-card-title {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 1.5rem;
+    line-height: 1.25;
+    color: var(--ink);
+    margin: 0.6rem 0 0;
+}
+
+.et-card-text {
+    font-family: var(--font-body);
+    font-size: var(--text-small);
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0.6rem 0 0;
+}
+
+/* "Best at sunset" line, with a line under it.
+   "margin-top: auto" pushes it (and the link after it) to the
+   bottom of the card, so in a row of cards the links all line up
+   even when one card has more text than the others. */
+.et-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: auto 0 0;
+    padding: 1.5rem 0 0.75rem;
+    border-bottom: 1px solid var(--ink);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+}
+
+/* "Open in Google Maps" link at the bottom of a card.
+   "align-self: flex-start" keeps the link only as wide as its
+   text, so tapping the empty space next to it does nothing. */
+.et-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    align-self: flex-start;
+    margin-top: 0.75rem;
+    padding: 0.25rem 0;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--teal);
+    text-decoration: none;
+}
+
+/* the small arrow after the text is a bit smaller */
+.et-card-link .et-icon-small {
+    width: 0.8em;
+    height: 0.8em;
+}
+
+@media (hover: hover) {
+    .et-card-link:hover {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+}
+
+
+/* ========== 5. "MORE STOPS AROUND MAE SOT" ==========
+   Smaller tiles with no time line, just a "Map" link. They use
+   the same .et-card pieces as above, plus the class "et-stop"
+   to make them a bit smaller. */
+
+.et-stops-intro {
+    margin-top: 3rem;
+    margin-bottom: 1.75rem;
+}
+
+.et-stops-intro .et-heading {
+    font-size: clamp(1.6rem, 2.4vw, 2rem);
+}
+
+.et-stop .et-card-media img {
+    /* 282 x 180 in the design */
+    aspect-ratio: 11 / 7;
+}
+
+.et-stop .et-card-body {
+    padding: 1.25rem 1.1rem 1.25rem;
+}
+
+.et-stop .et-card-title {
+    font-size: 1.35rem;
+}
+
+.et-stop .et-card-text {
+    font-size: 0.95rem;
+}
+
+/* No time line above it, so the "Map" link itself is pushed to
+   the bottom of the tile with "margin-top: auto". */
+.et-stop .et-card-link {
+    margin-top: auto;
+    padding-top: 1.25rem;
+}
+
+
+/* ========== 6. OVERNIGHT — THI LO SU ==========
+   Dark section: three photos and the text. */
+
+.et-overnight {
+    background-color: var(--teal-deep);
+    color: var(--cream);
+    padding: 4rem 0;
+}
+
+.et-overnight-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+}
+
+/* The photos. On a phone: one big photo on top, two small
+   ones side by side underneath.
+   "grid-column: 1 / -1" makes the big one stretch across both
+   columns. */
+.et-gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.et-gallery img {
+    display: block;
+    width: 100%;
+    /* "height: auto" so "aspect-ratio" works — see the note in
+       ".et-card-media img" above */
+    height: auto;
+    object-fit: cover;
+    border-radius: 16px;
+    aspect-ratio: 10 / 7;
+}
+
+.et-gallery .et-gallery-main {
+    grid-column: 1 / -1;
+}
+
+.et-overnight .et-kicker {
+    color: var(--sage);
+}
+
+.et-overnight .et-heading {
+    color: var(--white);
+}
+
+.et-overnight .et-text {
+    color: var(--cream);
+}
+
+/* "2–3 days", "Via Mae Sot", "Go early, roads are slow" */
+.et-facts {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.et-facts li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.9rem;
+    background-color: var(--et-pill-on-dark);
+    border-radius: 50px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--cream);
+}
+
+.et-facts .et-icon {
+    color: var(--sage);
+}
+
+/* "OPEN IN GOOGLE MAPS" — an outlined button on the dark
+   background */
+.et-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    padding: 1rem 1.6rem 1rem 1.3rem;
+    border: 1px solid var(--cream);
+    border-radius: 50px;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.et-btn-outline .et-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+@media (hover: hover) {
+    .et-btn-outline:hover {
+        transform: translateY(-3px);
+        background-color: var(--et-pill-on-dark);
+    }
+}
+
+.et-btn-outline:active {
+    transform: scale(0.97);
+}
+
+.et-photo-credit {
+    margin: 1rem 0 0;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--sage);
+}
+
+
+/* ========== 7. FESTIVAL — LOI KRATHONG SAI ========== */
+
+.et-festival {
+    background-color: var(--cream);
+    padding: 4rem 0;
+}
+
+.et-festival-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+}
+
+.et-festival-img {
+    display: block;
+    width: 100%;
+    /* "height: auto" so "aspect-ratio" works — see the note in
+       ".et-card-media img" */
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+/* "Read the festival story ->" */
+.et-text-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--teal);
+    text-decoration: none;
+}
+
+@media (hover: hover) {
+    .et-text-link:hover {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+}
+
+
+/* ========== 8. STAY BANNER — "COME BACK TO THE RIVER" ==========
+   Built the same way as the hero (photo behind, text in the
+   normal flow on top). */
+
+.et-stay {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 560px;
+    padding: 5rem 0 3.5rem;
+    overflow: hidden;
+    background-color: var(--ink);
+    color: var(--white);
+}
+
+.et-stay-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* The room photo is bright (white bed, pale walls), so this layer
+   is never fully see-through — there is always enough dark behind
+   the white text to read it. */
+.et-stay-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            rgba(18, 33, 36, 0.35) 0%,
+            rgba(18, 33, 36, 0.6) 45%,
+            rgba(18, 33, 36, 0.85) 100%);
+}
+
+.et-stay-text {
+    position: relative;
+    width: 100%;
+    max-width: 750px;
+    padding: 0 1.5rem;
+}
+
+.et-stay .et-hero-kicker {
+    color: var(--gold);
+}
+
+.et-stay-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(1.9rem, 4vw, 3.25rem);
+    line-height: 1.2;
+    color: var(--white);
+    text-shadow: 0 0 1px black;
+    margin: 0.75rem 0 0;
+    max-width: none;
+}
+
+.et-stay .et-hero-paragraph {
+    font-size: var(--text-body);
+}
+
+.et-stay .et-btn {
+    margin-top: 1.75rem;
+}
+
+
+/* ========== 9. THAI PAGE ==========
+   The Thai page's <body> has id="thai-version" (same as the
+   other Thai pages).
+
+   Kickers: wide letter-spacing pulls Thai tone marks and vowels
+   away from the letter they belong to (the design shows
+   "เท ี ่ยวตาก" instead of "เที่ยวตาก"). Thai has no capital
+   letters either, so "uppercase" does nothing. So Thai kickers
+   get normal spacing and a slightly bigger size instead. */
+
+#thai-version .et-kicker,
+#thai-version .et-hero-kicker,
+#thai-version .et-card-kicker {
+    letter-spacing: normal;
+    text-transform: none;
+    font-size: 0.95rem;
+}
+
+/* Same reason for the buttons */
+#thai-version .et-btn,
+#thai-version .et-btn-outline {
+    letter-spacing: normal;
+    font-size: 1rem;
+}
+
+/* Thai tone marks need more room between lines than English
+   (see the "#thai-version h1, #thai-version h2" rule in
+   styles.css). h3 is added here for the card titles. */
+#thai-version .et-card-title,
+#thai-version .et-group-title,
+#thai-version .et-stay-title {
+    line-height: 1.45;
+}
+
+/* The hero title is in English on the Thai page too, so it keeps
+   the English line spacing. It has to be written out here because
+   the "#thai-version h1" rule in styles.css would otherwise give
+   it the taller Thai spacing (an id beats a class). */
+#thai-version .et-hero-title {
+    line-height: 1.15;
+}
+
+
+/* ====== RESPONSIVE — 768px (tablet) ====== */
+
+@media (min-width: 768px) {
+
+    /* hero: the photo goes back to exactly the size of the hero
+       (the phone version is taller to move the sun up), and the
+       crop goes back to 45% so the bridge on the left shows too */
+    .et-hero-img {
+        height: 100%;
+        object-position: 45% center;
+    }
+
+    .et-hero-overlay {
+        background: linear-gradient(90deg,
+                rgba(18, 33, 36, 0.6) 0%,
+                rgba(18, 33, 36, 0.35) 60%,
+                rgba(18, 33, 36, 0.2) 100%);
+    }
+
+    .et-hero-text {
+        padding: 0;
+        margin-left: 10vw;
+        max-width: 70vw;
+    }
+
+    .et-hero-paragraph {
+        font-size: 1.1rem;
+    }
+
+    .et-section {
+        padding: 4.5rem 0;
+    }
+
+    /* sideways rows turn back into normal grids from here */
+    .et-swipe {
+        grid-auto-flow: row;
+        grid-auto-columns: auto;
+        overflow-x: visible;
+        scroll-snap-type: none;
+        padding-bottom: 0;
+        gap: 1.5rem;
+    }
+
+    .et-swipe-hint {
+        display: none;
+    }
+
+    /* 3 cards per row for "walk" and "under an hour" */
+    .et-cards-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* 2 wide cards per row for "day trips" */
+    .et-cards-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Mae Sot tiles: 2 x 2 on a tablet, 4 in a row on desktop */
+    .et-cards-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* the card photos are only ~230px wide on a tablet, so the
+       text gets a little less padding */
+    .et-card-body {
+        padding: 1.5rem 1.25rem;
+    }
+
+    /* day-trip photos are wider and flatter (588 x 333 in the
+       design) */
+    .et-cards-2 .et-card-media img {
+        aspect-ratio: 16 / 9;
+    }
+
+    .et-festival-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+    }
+
+    .et-stay {
+        align-items: center;
+    }
+
+    .et-stay-overlay {
+        background: linear-gradient(90deg,
+                rgba(18, 33, 36, 0.8) 0%,
+                rgba(18, 33, 36, 0.55) 55%,
+                rgba(18, 33, 36, 0.15) 100%);
+    }
+
+    .et-stay-text {
+        padding: 0;
+        margin-left: 10vw;
+        max-width: 70vw;
+    }
+
+    /* "Photos: TAT Tak Office" a little further from the corner */
+    .et-hero-credit {
+        right: 1.5rem;
+        bottom: 1rem;
+    }
+}
+
+
+/* ====== RESPONSIVE — 840px (header menu becomes one row) ======
+   On a white (scrolled) header, gold text is too pale to read
+   easily, so the current page turns deep green there instead.
+   Only from 840px: below that the menu is the dark slide-out
+   panel, where gold reads well. */
+
+@media (min-width: 840px) {
+
+    /* A thin line under "Explore Tak", like the design. It's an
+       underline (text-decoration) rather than a border, because a
+       border with padding would make this one link taller than the
+       others and push its text up out of line with them.
+       "currentColor" = the same colour as the text. */
+    .primary-nav a.et-nav-current {
+        text-decoration: underline;
+        text-decoration-color: currentColor;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.9em;
+    }
+
+    .scrolled .primary-nav a.et-nav-current {
+        color: var(--deep-green);
+    }
+}
+
+
+/* ====== RESPONSIVE — 1024px (desktop) ====== */
+
+@media (min-width: 1024px) {
+
+    /* hero: text starts at the same place as on the home page */
+    .et-hero-text {
+        margin-left: 15vw;
+        max-width: 750px;
+    }
+
+    .et-hero-paragraph {
+        font-size: 1.25rem;
+    }
+
+    /* intro text on the left, "Good to know" box on the right */
+    .et-intro {
+        padding-top: 6rem;
+    }
+
+    .et-intro-grid {
+        grid-template-columns: 1fr 400px;
+        gap: 6rem;
+        align-items: center;
+    }
+
+    .et-tips {
+        padding: 1.75rem 1.75rem 1.5rem;
+    }
+
+    .et-chips {
+        margin-top: 2.25rem;
+        overflow-x: visible;
+    }
+
+    .et-section {
+        padding: 5rem 0 5.5rem;
+    }
+
+    .et-card-body {
+        padding: 1.75rem;
+    }
+
+    .et-card-title {
+        font-size: 1.625rem;
+    }
+
+    .et-cards-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .et-stop .et-card-body {
+        padding: 1.25rem 1.1rem;
+    }
+
+    .et-stops-intro {
+        margin-top: 4.5rem;
+    }
+
+    .et-stops-intro .et-text {
+        max-width: 760px;
+    }
+
+    /* photos on the left, text on the right */
+    .et-overnight {
+        padding: 7rem 0;
+    }
+
+    .et-overnight-grid {
+        grid-template-columns: 640fr 488fr;
+        gap: 4.5rem;
+    }
+
+    /* big photo on the left taking both rows, two small ones
+       stacked on the right — 640 x 440 in the design */
+    .et-gallery {
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        aspect-ratio: 640 / 440;
+    }
+
+    /* here the grid decides the size of each photo, so the photo
+       just fills its grid cell */
+    .et-gallery img {
+        height: 100%;
+        aspect-ratio: auto;
+    }
+
+    .et-gallery .et-gallery-main {
+        grid-column: 1;
+        grid-row: 1 / 3;
+    }
+
+    .et-festival {
+        padding: 6rem 0;
+    }
+
+    .et-festival-grid {
+        grid-template-columns: 600fr 528fr;
+        gap: 4.5rem;
+    }
+
+    .et-stay-text {
+        margin-left: 15vw;
+    }
+}

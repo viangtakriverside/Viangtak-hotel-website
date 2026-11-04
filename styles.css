@@ -2334,6 +2334,37 @@ body.nav-open {
 }
 
 
+/* ====== RESPONSIVE — 840px to 959px (narrow desktop menu) ======
+   Adding the "Explore Tak" link made the menu one item longer. On a
+   screen between 840px and about 905px wide (English) it no longer fit
+   on one line next to the logo, and the header wrapped onto two lines.
+   In just that range, the space between the menu items shrinks from
+   1.5rem (set in the 840px rule above) to 0.8rem, which is enough for
+   everything to fit on one line in both English and Thai. From 960px
+   up there is plenty of room, so the normal 1.5rem comes back. */
+
+@media (min-width: 840px) and (max-width: 959px) {
+
+    .primary-nav ul {
+        gap: 0.8rem;
+    }
+}
+
+/* Same problem again just above 1024px: from 1024px the header gets
+   7rem of padding on each side (see the 1024px rule below), which
+   leaves less room for the menu, and between about 1024px and 1090px
+   it wrapped onto two lines. The same 0.8rem fixes it there too.
+   This rule sits before the 1024px rule, but nothing in that rule
+   sets the gap, so the order doesn't matter. */
+
+@media (min-width: 1024px) and (max-width: 1149px) {
+
+    .primary-nav ul {
+        gap: 0.8rem;
+    }
+}
+
+
 /* ====== RESPONSIVE — 1024px ====== */
 
 @media (min-width: 1024px) {
